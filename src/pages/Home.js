@@ -4,7 +4,7 @@ import ResultPage from "../Components/ResultPage";
 
 const Home = () => {
   return (
-    <Container fluid>
+    <Container fluid style={{ marginTop: "3.2em" }}>
       <h2 style={{ color: "white", textAlign: "center", padding: "0.6em 0" }}>
         Search your movie or series
       </h2>

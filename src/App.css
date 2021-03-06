@@ -1,3 +1,11 @@
+.navbar {
+  width: 100% !important;
+}
+.navbarBrand {
+  color: white;
+  font-size: 1.8em;
+}
+
 body {
   background-color: #2f363f;
   padding: 0;
@@ -38,7 +46,7 @@ body {
   color: #ffffff;
   font-size: 1.2em;
   padding: 2em;
-  margin: auto;
+  margin-top: 3.2em;
 }
 
 .detailsCard {

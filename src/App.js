@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
 import "./App.css";
 import ResultContext from "./Context/ResultsContext";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Home from "./pages/Home";
 import DetailsPage from "./pages/DetailsPage";
+import NavigationBar from "./Components/NavigationBar";
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -23,6 +25,7 @@ function App() {
       }}
     >
       <BrowserRouter>
+        <NavigationBar />
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/details" exact component={DetailsPage} />
