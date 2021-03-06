@@ -34,6 +34,17 @@ body {
   flex-basis: calc(25% - 3em);
 }
 
+.movieDetails {
+  color: #ffffff;
+  font-size: 1.2em;
+  padding: 2em;
+  margin: auto;
+}
+
+.detailsCard {
+  text-align: start;
+}
+
 @media only screen and (max-width: 768px) {
   .grid > .box {
     flex-basis: calc(50% - 3em);
