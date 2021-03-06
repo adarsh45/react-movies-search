@@ -4,7 +4,7 @@ import Axios from "axios";
 import { Col, Container, Row, Spinner } from "reactstrap";
 import imdbLogo from "../imdb-logo.png";
 
-const API_URL = "http://www.omdbapi.com/?apikey=";
+const API_URL = "https://www.omdbapi.com/?apikey=";
 const API_KEY = "852159f0";
 
 const DetailsPage = () => {

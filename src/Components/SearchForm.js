@@ -13,7 +13,7 @@ import { FaSearch } from "react-icons/fa";
 import Axios from "axios";
 import ResultContext from "../Context/ResultsContext";
 
-const API_URL = "http://www.omdbapi.com/?apikey=";
+const API_URL = "https://www.omdbapi.com/?apikey=";
 const API_KEY = "852159f0";
 
 const SearchForm = () => {
