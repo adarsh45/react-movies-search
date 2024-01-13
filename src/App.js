@@ -28,7 +28,7 @@ function App() {
         <NavigationBar />
         <Switch>
           <Route path="/" exact component={Home} />
-          <Route path="/details" exact component={DetailsPage} />
+          <Route path="/details/:imdbId" exact component={DetailsPage} />
         </Switch>
       </BrowserRouter>
     </ResultContext.Provider>

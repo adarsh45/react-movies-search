@@ -7,14 +7,12 @@ const ResultPage = () => {
   const { resultObject, loading } = useContext(ResultContext);
 
   const countProperties = (obj) => {
-    var count = 0;
-    for (var prop in obj) {
+    let count = 0;
+    for (let prop in obj) {
       if (obj.hasOwnProperty(prop)) ++count;
     }
     return count;
   };
-
-  console.log(resultObject);
 
   return (
     <div>

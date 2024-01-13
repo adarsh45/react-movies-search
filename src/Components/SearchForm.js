@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
 import {
   Form,
   FormGroup,
@@ -9,12 +8,9 @@ import {
   Button,
 } from "reactstrap";
 import { FaSearch } from "react-icons/fa";
-
-import Axios from "axios";
 import ResultContext from "../Context/ResultsContext";
-
-const API_URL = "https://www.omdbapi.com/?apikey=";
-const API_KEY = "852159f0";
+import { fetchMoviesData } from "../helpers/api-calls";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const SearchForm = () => {
   const [searchText, setSearchText] = useState("");
@@ -25,40 +21,25 @@ const SearchForm = () => {
     fontSize: "1.4em",
   };
 
-  const submitMovieText = (e) => {
+  const searchMovies = async (e) => {
     e.preventDefault();
-    if (searchText === "") {
-      return alert("Please enter a movie name first!");
+    const search = searchText.trim();
+    if (search.length < 3)
+      return alert("Please enter a longerrr search value!");
+    setLoading(true);
+    const { success, data } = await fetchMoviesData(search);
+    if (success) {
+      setResultObject(data);
+    } else {
+      console.error(data);
+      alert("Something went wrong! Please try again later", data);
     }
-    const searchUrl = `${API_URL}${API_KEY}&s=${searchText}`;
-    fetchResults(searchUrl);
-    // console.log(searchText);
+    setLoading(false);
     setSearchText("");
   };
 
-  const fetchResults = async (searchUrl) => {
-    setLoading(true);
-    let { data, status } = await Axios.get(searchUrl);
-    if (status === 200 && data.Response === "True") {
-      // console.log(data);
-      // const ar = data?.Search;
-      // console.log(ar);
-      // console.log(typeof ar);
-      setResultObject(data?.Search);
-    } else {
-      console.log("Something went wrong while getting response");
-      alert("Something went wrong while fetching results!");
-    }
-    setLoading(false);
-  };
-
   return (
-    <Form
-      onSubmit={(e) => {
-        submitMovieText(e);
-      }}
-      className="searchbox"
-    >
+    <Form onSubmit={searchMovies} className="searchbox">
       <FormGroup>
         <InputGroup>
           <Input

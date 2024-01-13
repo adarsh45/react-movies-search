@@ -1,72 +1,75 @@
-import { useContext, useEffect, useState } from "react";
-import ResultContext from "../Context/ResultsContext";
-import Axios from "axios";
+import { useEffect, useState } from "react";
 import { Col, Container, Row, Spinner } from "reactstrap";
 import imdbLogo from "../imdb-logo.png";
-
-const API_URL = "https://www.omdbapi.com/?apikey=";
-const API_KEY = "852159f0";
+import { fetchMovieDetails } from "../helpers/api-calls";
+import {
+  useHistory,
+  useParams,
+} from "react-router-dom/cjs/react-router-dom.min";
 
 const DetailsPage = () => {
-  const { imdbId } = useContext(ResultContext);
-  const [detailsObject, setDetailsObject] = useState(null);
+  const { imdbId = "" } = useParams();
+  const history = useHistory();
 
-  const fetchDetails = async () => {
-    if (imdbId) {
-      // generating API url
-      let url = `${API_URL}${API_KEY}&i=${imdbId}`;
-      //   making a request & storing response
-      const { status, data } = await Axios.get(url);
-      if (status === 200 && data.Response === "True") {
-        setDetailsObject(data);
-      } else {
-        console.log("got no response!");
+  const [movieDetails, setMovieDetails] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const fetchDetails = async (imdbID) => {
+    if (imdbID) {
+      setLoading(true);
+      const { success, data } = await fetchMovieDetails(imdbID);
+      if (success) setMovieDetails(data);
+      else {
+        console.error(data);
+        alert("Something went wrong, Please try again later!");
       }
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchDetails();
-  }, imdbId);
+    if (imdbId) {
+      fetchDetails(imdbId);
+    }
+  }, [imdbId]);
+
+  if (!imdbId) return history.push("/");
 
   return (
-    <>
-      {detailsObject ? (
-        <Container className="movieDetails">
-          <Row md>
-            <Col md="6">
-              <img src={detailsObject.Poster} width="400" alt="poster" />
-            </Col>
-            <Col md="6" className="detailsCard">
-              <h1> {detailsObject.Title} </h1>
-              <p style={{ color: "#f3ce13" }}> {detailsObject.Year} </p>
-              <div>
-                <img src={imdbLogo} width="66" alt="imdb-logo" />
-                <span>{" " + detailsObject.imdbRating}</span>
-              </div>
-              <p style={{ margin: "0.8em 0 0 0" }}>
-                <span style={{ color: "#f3ce13" }}>Genre:</span>{" "}
-                {detailsObject.Genre}{" "}
-              </p>
-              <p style={{ margin: "0.8em 0 0 0" }}>
-                <span style={{ color: "#f3ce13" }}>Director:</span>{" "}
-                {detailsObject.Director}{" "}
-              </p>
-              <p style={{ margin: "0.8em 0 0 0" }}>
-                <span style={{ color: "#f3ce13" }}>Actors:</span>{" "}
-                {detailsObject.Actors}{" "}
-              </p>
-              <p style={{ margin: "0.8em 0 0 0" }}>
-                <div style={{ color: "#f3ce13" }}>Plot:</div>{" "}
-                {detailsObject.Plot}{" "}
-              </p>
-            </Col>
-          </Row>
-        </Container>
-      ) : (
-        <Spinner color="danger" style={{ margin: "10% 0" }} />
+    <Container className="movieDetails">
+      {loading && <Spinner color="danger" style={{ margin: "10% 0" }} />}
+      {movieDetails && (
+        <Row>
+          <Col md="6">
+            <img src={movieDetails.Poster} width="400" alt="poster" />
+          </Col>
+          <Col md="6" className="detailsCard">
+            <h1>{movieDetails.Title}</h1>
+            <p style={{ color: "#f3ce13" }}>{movieDetails.Year}</p>
+            <div>
+              <img src={imdbLogo} width="66" alt="imdb-logo" />
+              <span>{" " + movieDetails.imdbRating}</span>
+            </div>
+            <p style={{ margin: "0.8em 0 0 0" }}>
+              <span style={{ color: "#f3ce13" }}>Genre:&nbsp;</span>
+              {movieDetails.Genre}{" "}
+            </p>
+            <p style={{ margin: "0.8em 0 0 0" }}>
+              <span style={{ color: "#f3ce13" }}>Director:&nbsp;</span>
+              {movieDetails.Director}{" "}
+            </p>
+            <p style={{ margin: "0.8em 0 0 0" }}>
+              <span style={{ color: "#f3ce13" }}>Actors:&nbsp;</span>
+              {movieDetails.Actors}{" "}
+            </p>
+            <p style={{ margin: "0.8em 0 0 0" }}>
+              <span style={{ color: "#f3ce13" }}>Plot:&nbsp;</span>
+              {movieDetails.Plot}{" "}
+            </p>
+          </Col>
+        </Row>
       )}
-    </>
+    </Container>
   );
 };
 

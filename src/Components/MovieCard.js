@@ -1,4 +1,3 @@
-import React, { useContext } from "react";
 import {
   Button,
   Card,
@@ -11,11 +10,9 @@ import { FaTv } from "react-icons/fa";
 import { MdMovie } from "react-icons/md";
 import { SiImdb } from "react-icons/si";
 import errorImg from "../error_img.png";
-import ResultContext from "../Context/ResultsContext";
 import { useHistory } from "react-router-dom";
 
 const MovieCard = ({ movieObject }) => {
-  const { setImdbId } = useContext(ResultContext);
   const history = useHistory();
 
   const styles = {
@@ -24,8 +21,7 @@ const MovieCard = ({ movieObject }) => {
   };
 
   const seeDetails = () => {
-    setImdbId(movieObject.imdbID);
-    history.push("/details");
+    history.push(`/details/${movieObject.imdbID}`);
   };
 
   return (
